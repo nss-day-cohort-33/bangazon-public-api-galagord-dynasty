@@ -19,11 +19,13 @@ from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 from bangazonapp.models import *
 from bangazonapp.views import CategoryTypes
+from bangazonapp.views import Products
 
 # pylint: disable=invalid-name
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'categories', CategoryTypes, 'categorytype')
+router.register(r'products', Products, 'product')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

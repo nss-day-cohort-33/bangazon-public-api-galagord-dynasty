@@ -26,45 +26,45 @@ class CategoryTypeSerializer(serializers.HyperlinkedModelSerializer):
 class CategoryTypes(ViewSet):
     """Product category types for Bangazon"""
 
-def create(self, request):
-    """Handle POST operations
-
-    Returns:
-        Response -- JSON serialized CategoryType model instance
-    """
-    new_category = CategoryType()
-    new_category.name = request.data["name"]
-    new_category.save()
-
-    serializer = CategoryTypeSerializer(new_category, context={'request': request})
-
-    return Response(serializer.data)
-
-def retrieve(self, request, pk=None):
-    """Handle GET requests for single category
-
-    Returns:
-        Response -- JSON serialized Category instance
-    """
-    try:
-        category = CategoryType.objects.get(pk=pk)
-        serializer = CategoryTypeSerializer(category, context={'request': request})
-        return Response(serializer.data)
-    except Exception as ex:
-        return HttpResponseServerError(ex)
-
-def list(self, request):
-        """Handle GET requests to Category resource
+    def create(self, request):
+        """Handle POST operations
 
         Returns:
-            Response -- JSON serialized list of category types
+            Response -- JSON serialized CategoryType model instance
         """
-        categories = CategoryType.objects.all()
+        new_category = CategoryType()
+        new_category.name = request.data["name"]
+        new_category.save()
 
-        category = self.request.query_params.get('category', None)
-        if category is not None:
-            categories = categories.filter(category__id=category)
+        serializer = CategoryTypeSerializer(new_category, context={'request': request})
 
-        serializer = CategoryTypeSerializer(
-            categories, many=True, context={'request': request})
         return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        """Handle GET requests for single category
+
+        Returns:
+            Response -- JSON serialized Category instance
+        """
+        try:
+            category = CategoryType.objects.get(pk=pk)
+            serializer = CategoryTypeSerializer(category, context={'request': request})
+            return Response(serializer.data)
+        except Exception as ex:
+            return HttpResponseServerError(ex)
+
+    def list(self, request):
+            """Handle GET requests to Category resource
+
+            Returns:
+                Response -- JSON serialized list of category types
+            """
+            categories = CategoryType.objects.all()
+
+            category = self.request.query_params.get('category', None)
+            if category is not None:
+                categories = categories.filter(category__id=category)
+
+            serializer = CategoryTypeSerializer(
+                categories, many=True, context={'request': request})
+            return Response(serializer.data)
