@@ -18,9 +18,11 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 from bangazonapp.models import *
+from bangazonapp.views import Payments
 from bangazonapp.views import Products
 
 router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'payments', Payments, 'payment')
 router.register(r'products', Products, 'product')
 
 urlpatterns = [
