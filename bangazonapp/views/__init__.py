@@ -1,1 +1,1 @@
-pass
+from .product import Products
