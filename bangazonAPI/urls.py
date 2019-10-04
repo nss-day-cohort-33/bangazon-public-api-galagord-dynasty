@@ -18,6 +18,8 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 from bangazonapp.models import *
+from bangazonapp.views import register_user, login_user
+from bangazonapp.views import Customers
 from bangazonapp.views import CategoryTypes
 from bangazonapp.views import Payments
 from bangazonapp.views import Products
@@ -25,12 +27,15 @@ from bangazonapp.views import Products
 # pylint: disable=invalid-name
 
 router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'customers', Customers, 'customer')
 router.register(r'categories', CategoryTypes, 'categorytype')
 router.register(r'payments', Payments, 'payment')
 router.register(r'products', Products, 'product')
 
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^register$', register_user),
+    url(r'^login$', login_user),
     url(r'^api-token-auth/', obtain_auth_token),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
