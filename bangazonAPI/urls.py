@@ -18,8 +18,12 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 from bangazonapp.models import *
+from bangazonapp.views import CategoryTypes
+
+# pylint: disable=invalid-name
 
 router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'categories', CategoryTypes, 'categorytype')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

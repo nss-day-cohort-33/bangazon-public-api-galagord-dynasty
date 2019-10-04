@@ -1,1 +1,1 @@
-pass
+from .category import CategoryTypes
