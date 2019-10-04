@@ -21,9 +21,11 @@ from bangazonapp.models import *
 from bangazonapp.views import register_user, login_user
 from bangazonapp.views import Customers
 from bangazonapp.views import Products
+from bangazonapp.views import Payments
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'customers', Customers, 'customer')
+router.register(r'payments', Payments, 'payment')
 router.register(r'products', Products, 'product')
 
 urlpatterns = [
