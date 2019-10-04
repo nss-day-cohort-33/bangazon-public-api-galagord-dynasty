@@ -1,1 +1,1 @@
-pass
+from .payment import Payments
