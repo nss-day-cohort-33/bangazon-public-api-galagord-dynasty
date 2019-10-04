@@ -20,10 +20,11 @@ from rest_framework.authtoken.views import obtain_auth_token
 from bangazonapp.models import *
 from bangazonapp.views import register_user, login_user
 from bangazonapp.views import Customers
-
+from bangazonapp.views import Products
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'customers', Customers, 'customer')
+router.register(r'products', Products, 'product')
 
 urlpatterns = [
     url(r'^', include(router.urls)),
