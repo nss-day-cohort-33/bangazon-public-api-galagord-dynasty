@@ -20,11 +20,15 @@ from rest_framework.authtoken.views import obtain_auth_token
 from bangazonapp.models import *
 from bangazonapp.views import register_user, login_user
 from bangazonapp.views import Customers
-from bangazonapp.views import Products
+from bangazonapp.views import CategoryTypes
 from bangazonapp.views import Payments
+from bangazonapp.views import Products
+
+# pylint: disable=invalid-name
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'customers', Customers, 'customer')
+router.register(r'categories', CategoryTypes, 'categorytype')
 router.register(r'payments', Payments, 'payment')
 router.register(r'products', Products, 'product')
 

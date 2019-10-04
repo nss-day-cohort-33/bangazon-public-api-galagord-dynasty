@@ -8,8 +8,8 @@ class CategoryType(models.Model):
     
 
     class Meta:
-        verbose_name = ("category type")
-        verbose_name_plural = ("category types")
+        verbose_name = ("categorytype")
+        verbose_name_plural = ("categorytypes")
 
     def __str__(self):
         return self.name
