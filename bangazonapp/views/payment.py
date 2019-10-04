@@ -5,6 +5,10 @@ from rest_framework import serializers
 from rest_framework import status
 from bangazonapp.models import Payment, Customer
 
+"""Author: Adam Knowles
+    Purpose: Allow a user to communicate with the Bangazon database to GET and POST entries.
+    Methods: GET POST"""
+
 
 class PaymentSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for Payments
