@@ -1,0 +1,37 @@
+[
+    {
+      "model": "bangazonapp.categorytype",
+      "pk": 1,
+      "fields": {
+        "name": "Electronics"
+      }
+    },
+    {
+        "model": "bangazonapp.categorytype",
+        "pk": 2,
+        "fields": {
+          "name": "Software"
+        }
+      },
+      {
+        "model": "bangazonapp.categorytype",
+        "pk": 3,
+        "fields": {
+          "name": "Clothing"
+        }
+      },
+      {
+        "model": "bangazonapp.categorytype",
+        "pk": 4,
+        "fields": {
+          "name": "Toys"
+        }
+      },
+      {
+        "model": "bangazonapp.categorytype",
+        "pk": 5,
+        "fields": {
+          "name": "Art"
+        }
+      }
+  ]

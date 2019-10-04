@@ -7,7 +7,7 @@ from django.dispatch import receiver
 
 class Customer(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE) 
     address = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=50)
 

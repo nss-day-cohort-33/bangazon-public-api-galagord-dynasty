@@ -1,0 +1,34 @@
+[
+    {
+      "model": "auth.user",
+      "pk": 1,
+      "fields": {
+        "password": "pbkdf2_sha256$150000$10yCtpQpDTEI$PwDkDJvyKpH7xSLQhOXl2yY7t3yxu59/l6eEtDT0Hm8=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "joe_shep",
+        "first_name": "Joe",
+        "last_name": "Shep",
+        "email": "joeshep@bangazon.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2019-09-23T14:06:30.047Z"
+      }
+    },
+    {
+      "model": "auth.user",
+      "pk": 2,
+      "fields": {
+        "password": "pbkdf2_sha256$150000$10yCtpQpDTEI$PwDkDJvyKpH7xSLQhOXl2yY7t3yxu59/l6eEtDT0Hm8=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "steve_brownlee",
+        "first_name": "Steve",
+        "last_name": "Brownlee",
+        "email": "stevebrownlee@bangazon.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2019-10-23T14:06:30.047Z"
+      }
+    }
+  ]

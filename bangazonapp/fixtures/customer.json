@@ -1,0 +1,20 @@
+[
+    {
+      "model": "bangazonapp.customer",
+      "pk": 1,
+      "fields": {
+        "address": "1234 Main St., Nashville, TN, 37075",
+        "phone_number": "555-555-5555",
+        "user_id": 1
+      }
+    },
+    {
+      "model": "bangazonapp.customer",
+      "pk": 2,
+      "fields": {
+        "address": "12347 S. Main St., Hendersonville, TN, 37075",
+        "phone_number": "555-555-5557",
+        "user_id": 2
+      }
+    }
+  ]
