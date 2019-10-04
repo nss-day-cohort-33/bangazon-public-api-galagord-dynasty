@@ -5,6 +5,10 @@ from rest_framework import serializers
 from rest_framework import status
 from bangazonapp.models import Product, CategoryType, Customer
 
+"""Author: Krystal Gates
+Purpose: Allow a user to communicate with the Bangazon database to GET POST and DELETE entries.
+Methods: GET DELETE(id) POST"""
+
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for products
@@ -19,10 +23,11 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id'
         )
         fields = ('id', 'url', 'name', 'description', 'quantity', 'price', 'creation_date', 'location', 'image', 'category_type_id', 'customer_id')
+        depth = 1
 
 
 class Products(ViewSet):
-    """Products for BangazonApi"""
+    """Products for BangazonApp"""
 
     def create(self, request):
         """Handle POST operations
@@ -38,7 +43,7 @@ class Products(ViewSet):
         new_product.creation_date = request.data["creation_date"]
         new_product.location = request.data["location"]
         new_product.image = request.data["image"]
-        category_type = CategoryType.objects.get(pk=request.data["catergory_type_id"])
+        category_type = CategoryType.objects.get(pk=request.data["category_type_id"])
         new_product.category_type = category_type
         customer = Customer.objects.get(pk=request.data["customer_id"])
         new_product.customer = customer
@@ -60,6 +65,24 @@ class Products(ViewSet):
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
+
+    def destroy(self, request, pk=None):
+        """Handle DELETE requests for a product
+
+        Returns:
+            Response -- 200, 404, or 500 status code
+        """
+        try:
+            product = Product.objects.get(pk=pk)
+            product.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Product.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def list(self, request):
         """Handle GET requests to products resource
