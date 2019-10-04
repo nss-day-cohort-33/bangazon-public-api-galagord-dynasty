@@ -1,0 +1,35 @@
+[
+    {
+      "model": "bangazonapp.payment",
+      "pk": 1,
+      "fields": {
+        "merchant_name": "VISA",
+        "account_number": 123456789,
+        "created_date": "2019-09-04",
+        "expiration_date": "2020-09-14",
+        "customer_id": 1
+      }
+    },
+    {
+      "model": "bangazonapp.payment",
+      "pk": 2,
+      "fields": {
+        "merchant_name": "AMEX",
+        "account_number": 123456987,
+        "created_date": "2017-09-04",
+        "expiration_date": "2018-09-14",
+        "customer_id": 1
+      }
+    },
+    {
+      "model": "bangazonapp.payment",
+      "pk": 3,
+      "fields": {
+        "merchant_name": "MasterCard",
+        "account_number": 123654987,
+        "created_date": "2018-09-04",
+        "expiration_date": "2021-10-14",
+        "customer_id": 2
+      }
+    }
+  ]

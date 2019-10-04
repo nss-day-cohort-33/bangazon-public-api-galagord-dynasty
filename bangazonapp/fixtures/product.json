@@ -1,0 +1,87 @@
+[
+    {
+      "model": "bangazonapp.product",
+      "pk": 1,
+      "fields": {
+        "name": "LinuxJX 3000",
+        "description": "Home built PC running with Unbuntu 19.04 pre-installed.",
+        "quantity": 10,
+        "price": 899.99,
+        "creation_date": "2019-10-02",
+        "location": "Nashville",
+        "category_type_id": 1,
+        "customer_id": 1
+      }
+    },
+    {
+        "model": "bangazonapp.product",
+        "pk": 2,
+        "fields": {
+          "name": "code.Archive 2019",
+          "description": "Desktop application to store coding resources.",
+          "quantity": 4,
+          "price": 99.99,
+          "creation_date": "2019-10-02",
+          "location": "Nashville",
+          "category_type_id": 2,
+          "customer_id": 1
+        }
+      },
+      {
+        "model": "bangazonapp.product",
+        "pk": 3,
+        "fields": {
+          "name": "Tan Khakis",
+          "description": "Hand Knit Khakis, made in my garage.",
+          "quantity": 40,
+          "price": 29.99,
+          "creation_date": "2019-10-02",
+          "location": "Hendersonville",
+          "category_type_id": 3,
+          "customer_id": 2
+        }
+      },
+      {
+        "model": "bangazonapp.product",
+        "pk": 4,
+        "fields": {
+          "name": "Band T-shirt",
+          "description": "Every band T-shirt combined into one super band T-shirt.",
+          "quantity": 10,
+          "price": 19.99,
+          "creation_date": "2019-10-02",
+          "location": "Hendersonville",
+          "category_type_id": 3,
+          "customer_id": 2
+        }
+      },
+      {
+        "model": "bangazonapp.product",
+        "pk": 5,
+        "fields": {
+          "name": "Programmer Yoda",
+          "description": "'SQL statements, he writes.'",
+          "quantity": 15,
+          "price": 24.99,
+          "creation_date": "2019-10-02",
+          "location": "Nashville",
+          "category_type_id": 4,
+          "customer_id": 1
+        }
+      },
+      {
+        "model": "bangazonapp.product",
+        "pk": 6,
+        "fields": {
+          "name": "Yoda Pinata",
+          "description": "'Paper Mache, made out of, I am.'",
+          "quantity": 15,
+          "price": 24.99,
+          "creation_date": "2019-10-02",
+          "location": "Nashville",
+          "category_type_id": 4,
+          "customer_id": 2
+        }
+      }
+      
+  ]
