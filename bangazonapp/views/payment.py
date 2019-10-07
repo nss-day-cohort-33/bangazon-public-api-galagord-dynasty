@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from bangazonapp.models import Payment, Customer
+from .customer import CustomerSerializer
 
 """Author: Adam Knowles
     Purpose: Allow a user to communicate with the Bangazon database to GET and POST entries.
@@ -11,6 +12,9 @@ from bangazonapp.models import Payment, Customer
 
 
 class PaymentSerializer(serializers.HyperlinkedModelSerializer):
+
+    
+    
     """JSON serializer for Payments
 
     Arguments:
@@ -21,8 +25,10 @@ class PaymentSerializer(serializers.HyperlinkedModelSerializer):
         url = serializers.HyperlinkedIdentityField(
             view_name='payment',
             lookup_field='id'
+            
         )
-        fields = ('id', 'url', 'merchant_name', 'account_number', 'created_date', 'expiration_date', 'customer_id')
+        fields = ('id', 'url', 'merchant_name', 'account_number', 'created_date', 'expiration_date', 'customer')
+        depth = 2
 
 
 class Payments(ViewSet):
