@@ -5,6 +5,7 @@ from rest_framework import serializers
 from rest_framework import status
 from bangazonapp.models import Product, CategoryType, Customer
 
+
 """Author: Krystal Gates
 Purpose: Allow a user to communicate with the Bangazon database to GET POST and DELETE entries.
 Methods: GET DELETE(id) POST"""
@@ -16,14 +17,16 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
     Arguments:
         serializers
     """
+
     class Meta:
         model = Product
         url = serializers.HyperlinkedIdentityField(
             view_name='product',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'name', 'description', 'quantity', 'price', 'creation_date', 'location', 'image', 'category_type_id', 'customer_id')
-        depth = 1
+        fields = ('id', 'url', 'name', 'description', 'quantity', 'price', 'creation_date', 'location', 'image', 'category_type', 'customer')
+
+        depth = 2
 
 
 class Products(ViewSet):

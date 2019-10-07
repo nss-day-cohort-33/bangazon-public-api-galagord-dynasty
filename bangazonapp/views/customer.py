@@ -8,16 +8,6 @@ from rest_framework import status
 from bangazonapp.models import Customer
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    """JSON serializer for park areas
-
-    Arguments:
-        serializers.HyperlinkedModelSerializer
-    """
-    class Meta:
-        model = User
-        fields = ('id', 'url', 'username', 'first_name', 'last_name', 'email', 'date_joined', 'is_active')
-
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for park areas
 
@@ -30,7 +20,7 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
             view_name='customer',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'user_id', 'address', 'phone_number')
+        fields = ('id', 'url', 'user', 'address', 'phone_number')
         depth = 1
 
 
