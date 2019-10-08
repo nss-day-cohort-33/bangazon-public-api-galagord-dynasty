@@ -22,7 +22,7 @@ from bangazonapp.views import register_user, login_user
 from bangazonapp.views import Customers
 from bangazonapp.views import CategoryTypes
 from bangazonapp.views import Payments
-from bangazonapp.views import Products, UserViewSet
+from bangazonapp.views import Products, UserViewSet, Orders
 
 # pylint: disable=invalid-name
 
@@ -32,6 +32,7 @@ router.register(r'categories', CategoryTypes, 'categorytype')
 router.register(r'payments', Payments, 'payment')
 router.register(r'products', Products, 'product')
 router.register(r'users', UserViewSet, 'user')
+router.register(r'orders', Orders, 'order')
 
 urlpatterns = [
     url(r'^', include(router.urls)),
