@@ -21,7 +21,8 @@ class CategoryTypeSerializer(serializers.HyperlinkedModelSerializer):
             view_name='categorytype',
             lookup_field='pk'
         )
-        fields = ('id', 'url', 'name')
+        fields = ('id', 'url', 'name', 'products')
+        depth = 2
 
 class CategoryTypes(ViewSet):
     """Product category types for Bangazon"""
