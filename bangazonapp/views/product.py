@@ -43,9 +43,9 @@ class Products(ViewSet):
         new_product.description = request.data["description"]
         new_product.quantity = request.data["quantity"]
         new_product.price = request.data["price"]
-        new_product.creation_date = request.data["creation_date"]
+        # new_product.creation_date = request.data["creation_date"]
         new_product.location = request.data["location"]
-        new_product.image = request.data["image"]
+        # new_product.image = request.data["image"]
         category_type = CategoryType.objects.get(pk=request.data["category_type_id"])
         new_product.category_type = category_type
         customer = Customer.objects.get(pk=request.data["customer_id"])
