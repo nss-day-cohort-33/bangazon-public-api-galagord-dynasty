@@ -19,7 +19,7 @@ class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
     """
 
     class Meta:
-        model = Order
+        model = OrderProduct
         url = serializers.HyperlinkedIdentityField(
             view_name='orderproduct',
             lookup_field='id'
@@ -42,7 +42,7 @@ class OrderProducts(ViewSet):
         order = Order.objects.get(pk=request.data["order_id"])
         new_orderproduct.order = order
         product = Product.objects.get(pk=request.data["product_id"])
-        new_orderproduct.customer = product
+        new_orderproduct.product = product
         new_orderproduct.quantity = request.data["quantity"]
 
         new_orderproduct.save()
