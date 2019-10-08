@@ -6,3 +6,4 @@ from .payment import Payments
 from .product import Products
 from .user import UserViewSet
 from .order import Orders
+from .orderproduct import OrderProducts
