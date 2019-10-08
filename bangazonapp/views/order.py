@@ -24,7 +24,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             view_name='product',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'payment', 'customer', 'created_date')
+        fields = ('id', 'url', 'payment','customer_id', 'customer', 'created_date')
 
         depth = 1
 
@@ -111,9 +111,9 @@ class Orders(ViewSet):
         customer = self.request.query_params.get('customer', None)
         payment = self.request.query_params.get('payment', None)
         if customer is not None:
-            orders = orders.filter(customer__id=customer)
+            orders = orders.filter(customer_id=customer)
         if payment is not None:
-            orders = orders.filter(payment__id=payment)
+            orders = orders.filter(payment=None)
 
         serializer = OrderSerializer(
             orders, many=True, context={'request': request})
