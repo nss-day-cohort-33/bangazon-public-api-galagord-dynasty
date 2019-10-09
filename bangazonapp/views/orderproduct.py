@@ -19,14 +19,14 @@ class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
     """
 
     class Meta:
-        model = Order
+        model = OrderProduct
         url = serializers.HyperlinkedIdentityField(
             view_name='orderproduct',
             lookup_field='id'
         )
         fields = ('id', 'url', 'order', 'product', 'quantity')
 
-        depth = 1
+        depth = 2
 
 
 class OrderProducts(ViewSet):
@@ -42,7 +42,7 @@ class OrderProducts(ViewSet):
         order = Order.objects.get(pk=request.data["order_id"])
         new_orderproduct.order = order
         product = Product.objects.get(pk=request.data["product_id"])
-        new_orderproduct.customer = product
+        new_orderproduct.product = product
         new_orderproduct.quantity = request.data["quantity"]
 
         new_orderproduct.save()
@@ -92,10 +92,15 @@ class OrderProducts(ViewSet):
 
         order = self.request.query_params.get('order', None)
         product = self.request.query_params.get('product', None)
+        payment = self.request.query_params.get('payment', None)
+
         if product is not None:
             orderproducts = orderproducts.filter(product__id=product)
         if order is not None:
-            orderproducts = orderproducts.filter(order__id=order)
+            orderproducts = orderproducts.filter(order_payment=None)
+        # if payment is not None:
+        #     orderproducts = orderproducts.filter(payment__none=None)
+
 
         serializer = OrderProductSerializer(
             orderproducts, many=True, context={'request': request})
