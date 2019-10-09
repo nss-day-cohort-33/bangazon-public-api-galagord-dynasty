@@ -26,7 +26,7 @@ class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
         )
         fields = ('id', 'url', 'order', 'product', 'quantity')
 
-        depth = 1
+        depth = 2
 
 
 class OrderProducts(ViewSet):
@@ -92,10 +92,15 @@ class OrderProducts(ViewSet):
 
         order = self.request.query_params.get('order', None)
         product = self.request.query_params.get('product', None)
+        payment = self.request.query_params.get('payment', None)
+
         if product is not None:
             orderproducts = orderproducts.filter(product__id=product)
         if order is not None:
-            orderproducts = orderproducts.filter(order__id=order)
+            orderproducts = orderproducts.filter(order_payment=None)
+        # if payment is not None:
+        #     orderproducts = orderproducts.filter(payment__none=None)
+
 
         serializer = OrderProductSerializer(
             orderproducts, many=True, context={'request': request})
