@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from bangazonapp.models import OrderProduct, Order, Product
-
+from .product import ProductSerializer
 
 """Author: Krystal Gates
 Purpose: Allow a user to communicate with the Bangazon database to GET POST and DELETE entries for orderproduct.
@@ -24,9 +24,9 @@ class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
             view_name='orderproduct',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'order', 'product', 'quantity')
+        fields = ('id', 'url', 'order', 'product')
 
-        depth = 2
+        depth = 1
 
 
 class OrderProducts(ViewSet):

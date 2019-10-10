@@ -7,9 +7,9 @@ from django.dispatch import receiver
 
 class Customer(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE) 
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=50)
 
     def __str__(self):
-        return "{} {}".format(self.first_name, self.last_name)
+        return "{} {}".format(self.user.first_name, self.user.last_name)

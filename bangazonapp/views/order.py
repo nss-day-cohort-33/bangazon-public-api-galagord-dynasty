@@ -3,8 +3,9 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from bangazonapp.models import Order, Customer, Payment
-
+from bangazonapp.models import Order, Customer, Payment, OrderProduct, Product
+from .orderproduct import OrderProductSerializer
+from .product import ProductSerializer
 
 """Author: Krystal Gates
 Purpose: Allow a user to communicate with the Bangazon database to GET POST and DELETE entries for orders.
@@ -18,14 +19,14 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
         serializers
     """
 
+    line_items = ProductSerializer(many=True)
     class Meta:
         model = Order
         url = serializers.HyperlinkedIdentityField(
-            view_name='product',
+            view_name='order',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'payment','customer_id', 'customer', 'created_date')
-
+        fields = ('id', 'url', 'payment','customer_id', 'customer', 'created_date', 'line_items')
         depth = 1
 
 
@@ -39,22 +40,34 @@ class Orders(ViewSet):
             Response -- JSON serialized Product instance
         """
 
-        new_order = Order()
-        foo = request.data.get("payment_id", None)
-        if foo is not None:
-            payment = Payment.objects.get(pk=request.data["payment_id"])
-            new_order.payment = payment
-            customer = Customer.objects.get(pk=request.data["customer_id"])
-            new_order.customer = customer
+        # Changing the orders resource by adding a product to an order means we have to make a new instance of OrderProduct. Let's do that first and add the product to it that was sent in the POST request:
+        order_item = OrderProduct()
+        order_item.product = Product.objects.get(pk=request.data["product_id"])
+
+        # Now, we need to know whether order_item's order will be an existing order _or_ a new order we'll have to create:
+        current_customer = Customer.objects.get(pk=request.user.id)
+        order = Order.objects.filter(customer=current_customer, payment=None)
+
+        # order is now either an existing, open order, or an empty queryset. How do we check? A new friend called exists()!
+        if order.exists():
+            print("Open order in db. Add it and the prod to OrderProduct")
+            order_item.order = order[0]
         else:
-            customer = Customer.objects.get(pk=request.data["customer_id"])
-            new_order.customer = customer
+            print("No open orders. Time to make a new order to add this product to")
+            new_order = Order()
+            new_order.customer = current_customer
+            new_order.save()
+            order_item.order = new_order
 
-        new_order.save()
+        # order_item has a product and an order. It's ready to save now
+        order_item.save()
 
-        serializer = OrderSerializer(new_order, context={'request': request})
+        # Convert the order to json and send it back to the client
+        serializer = OrderSerializer(order_item, context={'request': request})
 
         return Response(serializer.data)
+
+
 
     def update(self, request, pk=None):
         """Handle PUT requests for orders
@@ -107,14 +120,20 @@ class Orders(ViewSet):
             Response -- JSON serialized list of orders with customer
         """
         orders = Order.objects.all()
+        customer = Customer.objects.get(pk=request.user.id)
 
-        customer = self.request.query_params.get('customer', None)
-        payment = self.request.query_params.get('payment', None)
-        if customer is not None:
-            orders = orders.filter(customer_id=customer)
-        if payment is not None:
-            orders = orders.filter(payment=None)
-
-        serializer = OrderSerializer(
-            orders, many=True, context={'request': request})
+        # Either send back all closed orders for the order history view, or the single open order to display in cart view
+        cart = self.request.query_params.get('cart', None)
+        orders = orders.filter(customer_id=customer)
+        print("orders", orders)
+        if cart is not None:
+            orders = orders.filter(payment=None).get()
+            print("orders filtered", orders)
+            serializer = OrderSerializer(
+                orders, many=False, context={'request': request}
+              )
+        else:
+            serializer = OrderSerializer(
+                orders, many=True, context={'request': request}
+              )
         return Response(serializer.data)

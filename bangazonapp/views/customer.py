@@ -9,7 +9,7 @@ from bangazonapp.models import Customer
 
 
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
-    """JSON serializer for park areas
+    """JSON serializer for customers
 
     Arguments:
         serializers.HyperlinkedModelSerializer
