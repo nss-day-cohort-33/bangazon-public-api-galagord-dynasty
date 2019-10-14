@@ -13,8 +13,8 @@ from .customer import CustomerSerializer
 
 class PaymentSerializer(serializers.HyperlinkedModelSerializer):
 
-    
-    
+
+
     """JSON serializer for Payments
 
     Arguments:
@@ -25,7 +25,7 @@ class PaymentSerializer(serializers.HyperlinkedModelSerializer):
         url = serializers.HyperlinkedIdentityField(
             view_name='payment',
             lookup_field='id'
-            
+
         )
         fields = ('id', 'url', 'merchant_name', 'account_number', 'created_date', 'expiration_date', 'customer')
         depth = 2
@@ -43,9 +43,8 @@ class Payments(ViewSet):
         new_payment = Payment()
         new_payment.merchant_name = request.data["merchant_name"]
         new_payment.account_number = request.data["account_number"]
-        new_payment.created_date = request.data["created_date"]
         new_payment.expiration_date = request.data["expiration_date"]
-        
+
 
         customer = Customer.objects.get(pk=request.data["customer_id"])
         new_payment.customer = customer
@@ -68,7 +67,7 @@ class Payments(ViewSet):
         except Exception as ex:
             return HttpResponseServerError(ex)
 
-    
+
     def list(self, request):
         """Handle GET requests to payment resource
 
