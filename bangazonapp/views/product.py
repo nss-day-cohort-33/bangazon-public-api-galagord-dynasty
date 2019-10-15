@@ -48,7 +48,7 @@ class Products(ViewSet):
         # new_product.image = request.data["image"]
         category_type = CategoryType.objects.get(pk=request.data["category_type_id"])
         new_product.category_type = category_type
-        customer = Customer.objects.get(pk=request.data["customer_id"])
+        customer = Customer.objects.get(user=request.auth.user)
         new_product.customer = customer
         new_product.save()
 
