@@ -43,7 +43,6 @@ class Products(ViewSet):
         new_product.description = request.data["description"]
         new_product.quantity = request.data["quantity"]
         new_product.price = request.data["price"]
-        # new_product.creation_date = request.data["creation_date"]
         new_product.location = request.data["location"]
         # new_product.image = request.data["image"]
         category_type = CategoryType.objects.get(pk=request.data["category_type_id"])
@@ -96,11 +95,11 @@ class Products(ViewSet):
         products = Product.objects.all()
 
         category_type = self.request.query_params.get('category_type', None)
-        customer = self.request.query_params.get('customer', None)
+        customer = Customer.objects.get(user=request.auth.user)
         if category_type is not None:
             products = products.filter(category_type__id=category_type)
         if customer is not None:
-            products = products.filter(customer__id=customer)
+            products = products.filter(customer=customer)
 
         serializer = ProductSerializer(
             products, many=True, context={'request': request})

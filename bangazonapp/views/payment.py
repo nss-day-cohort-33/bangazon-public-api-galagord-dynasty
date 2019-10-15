@@ -46,7 +46,7 @@ class Payments(ViewSet):
         new_payment.expiration_date = request.data["expiration_date"]
 
 
-        customer = Customer.objects.get(pk=request.data["customer_id"])
+        customer = Customer.objects.get(user=request.auth.user)
         new_payment.customer = customer
         new_payment.save()
 
@@ -77,9 +77,8 @@ class Payments(ViewSet):
         payments = Payment.objects.all()
 
         # Support filtering payments by customer id
-        customer = self.request.query_params.get('customer', None)
-        if customer is not None:
-            payments = payments.filter(customer__id=customer)
+        customer = Customer.objects.get(user=request.auth.user)
+        payments = Payment.objects.filter(customer=customer)
 
         serializer = PaymentSerializer(
             payments, many=True, context={'request': request})
