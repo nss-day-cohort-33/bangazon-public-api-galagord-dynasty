@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from bangazonapp.models import OrderProduct, Order, Product
-
+from .product import ProductSerializer
 
 """Author: Krystal Gates
 Purpose: Allow a user to communicate with the Bangazon database to GET POST and DELETE entries for orderproduct.
@@ -13,7 +13,6 @@ Methods: GET DELETE(id) POST"""
 
 class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for orders
-
     Arguments:
         serializers
     """
@@ -24,36 +23,16 @@ class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
             view_name='orderproduct',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'order', 'product', 'quantity')
+        fields = ('id', 'url', 'order', 'product')
 
-        depth = 2
+        depth = 1
 
 
 class OrderProducts(ViewSet):
     """Orders for BangazonApp"""
 
-    def create(self, request):
-        """Handle POST operations
-
-        Returns:
-            Response -- JSON serialized OrderProduct instance
-        """
-        new_orderproduct = OrderProduct()
-        order = Order.objects.get(pk=request.data["order_id"])
-        new_orderproduct.order = order
-        product = Product.objects.get(pk=request.data["product_id"])
-        new_orderproduct.product = product
-        new_orderproduct.quantity = request.data["quantity"]
-
-        new_orderproduct.save()
-
-        serializer = OrderProductSerializer(new_orderproduct, context={'request': request})
-
-        return Response(serializer.data)
-
     def retrieve(self, request, pk=None):
         """Handle GET requests for single orderproduct
-
         Returns:
             Response -- JSON serialized orderproduct instance
         """
@@ -66,7 +45,6 @@ class OrderProducts(ViewSet):
 
     def destroy(self, request, pk=None):
         """Handle DELETE requests for a order
-
         Returns:
             Response -- 200, 404, or 500 status code
         """
@@ -84,7 +62,6 @@ class OrderProducts(ViewSet):
 
     def list(self, request):
         """Handle GET requests to orderproducts resource
-
         Returns:
             Response -- JSON serialized list of orderproducts
         """
