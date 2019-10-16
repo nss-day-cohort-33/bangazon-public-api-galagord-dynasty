@@ -6,10 +6,11 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from bangazonapp.models import Customer
+from rest_framework.decorators import action
 
 
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
-    """JSON serializer for park areas
+    """JSON serializer for payment
 
     Arguments:
         serializers.HyperlinkedModelSerializer
@@ -51,10 +52,22 @@ class Customers(ViewSet):
             Response -- JSON serialized list of park areas
         """
         customers = Customer.objects.all()
+        customer = Customer.objects.get(user=request.auth.user)
+        customers = Customer.objects.filter(customer=customer)
+
 
         serializer = CustomerSerializer(
             customers,
             many=True,
             context={'request': request}
         )
+        return Response(serializer.data)
+
+
+    @action(methods=['get'], detail=False)
+    def one_customer(self, request):
+
+        current_user = Customer.objects.get(user=request.auth.user)
+
+        serializer = CustomerSerializer(current_user, many=False, context={'request': request})
         return Response(serializer.data)
