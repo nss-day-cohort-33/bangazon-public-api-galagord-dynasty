@@ -2,10 +2,13 @@ from django.db import models
 from django.utils import timezone
 from .customer import Customer
 from .categorytype import CategoryType
+from safedelete.models import SafeDeleteModel
+from safedelete.models import SOFT_DELETE
 
 
-class Product(models.Model):
+class Product(SafeDeleteModel):
 
+    _safedelete_policy = SOFT_DELETE
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=150)
     quantity = models.IntegerField()
