@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from bangazonapp.models import Product, CategoryType, Customer
+from rest_framework.decorators import action
 
 
 """Author: Krystal Gates
@@ -100,4 +101,15 @@ class Products(ViewSet):
 
         serializer = ProductSerializer(
             products, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
+   
+    @action(methods=['get'], detail=False)
+    def myproducts(self, request):
+        current_user = Customer.objects.get(user=request.auth.user)
+        products = Product.objects.all()
+        products = products.filter(customer=current_user)
+
+        serializer = ProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data)
