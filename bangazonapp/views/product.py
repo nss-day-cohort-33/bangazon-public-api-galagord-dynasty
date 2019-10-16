@@ -95,11 +95,9 @@ class Products(ViewSet):
         products = Product.objects.all()
 
         category_type = self.request.query_params.get('category_type', None)
-        customer = Customer.objects.get(user=request.auth.user)
+        
         if category_type is not None:
             products = products.filter(category_type__id=category_type)
-        if customer is not None:
-            products = products.filter(customer=customer)
 
         serializer = ProductSerializer(
             products, many=True, context={'request': request})
