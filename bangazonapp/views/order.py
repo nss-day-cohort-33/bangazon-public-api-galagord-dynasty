@@ -43,7 +43,7 @@ class Orders(ViewSet):
         order_item.product = Product.objects.get(pk=request.data["product_id"])
 
         # Now, we need to know whether order_item's order will be an existing order _or_ a new order we'll have to create:
-        current_customer = Customer.objects.get(pk=request.user.id)
+        current_customer = Customer.objects.get(user=request.auth.user)
         order = Order.objects.filter(customer=current_customer, payment=None)
 
         # order is now either an existing, open order, or an empty queryset. How do we check? A new friend called exists()!
@@ -115,7 +115,7 @@ class Orders(ViewSet):
         """
         orders = Order.objects.all()
 
-        customer = self.request.query_params.get('customer', None)
+        customer = Customer.objects.get(user=request.auth.user)
         payment = self.request.query_params.get('payment', None)
         if customer is not None:
             orders = orders.filter(customer_id=customer)
