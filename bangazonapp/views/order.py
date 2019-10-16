@@ -114,11 +114,11 @@ class Orders(ViewSet):
             Response -- JSON serialized list of orders with customer
         """
         orders = Order.objects.all()
-
         customer = Customer.objects.get(user=request.auth.user)
+        orders = Order.objects.filter(customer=customer)
+        
         payment = self.request.query_params.get('payment', None)
-        if customer is not None:
-            orders = orders.filter(customer_id=customer)
+
         if payment is not None:
             orders = orders.filter(payment=None)
 
