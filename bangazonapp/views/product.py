@@ -105,8 +105,8 @@ class Products(ViewSet):
         
         #filter by location id
         location = self.request.query_params.get('location', None)
-        # category_type = self.request.query_params.get('category', None)
-        # quantity = self.request.query_params.get('quantity', None)
+        category_type = self.request.query_params.get('category', None)
+        quantity = self.request.query_params.get('quantity', None)
 
         if location == "":
             products = Product.objects.all()
