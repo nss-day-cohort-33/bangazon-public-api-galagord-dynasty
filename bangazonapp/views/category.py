@@ -7,7 +7,9 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from bangazonapp.models import CategoryType
+from bangazonapp.models import CategoryType, Product
+from .product import ProductSerializer
+
 
 class CategoryTypeSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for types of categories
@@ -15,6 +17,7 @@ class CategoryTypeSerializer(serializers.HyperlinkedModelSerializer):
     Arguments:
         serializers
     """
+    products = ProductSerializer(many=True)
     class Meta:
         model = CategoryType
         url = serializers.HyperlinkedIdentityField(
@@ -62,9 +65,11 @@ class CategoryTypes(ViewSet):
             """
             categories = CategoryType.objects.all()
 
-            category = self.request.query_params.get('category', None)
-            if category is not None:
-                categories = categories.filter(category__id=category)
+            limit = self.request.query_params.get('limit', None)
+            if limit is not None:
+                for category in categories:
+                    related_products = Product.objects.filter(category_type=category)
+                    category.products = list(related_products)[:3]
 
             serializer = CategoryTypeSerializer(
                 categories, many=True, context={'request': request})
