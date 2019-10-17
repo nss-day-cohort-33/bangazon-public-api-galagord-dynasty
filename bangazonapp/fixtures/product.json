@@ -8,7 +8,7 @@
         "quantity": 10,
         "price": 899.99,
         "creation_date": "2019-10-02",
-        "location": "Nashville",
+        "location": "nashville",
         "category_type_id": 1,
         "customer_id": 1
       }
@@ -22,7 +22,7 @@
           "quantity": 4,
           "price": 99.99,
           "creation_date": "2019-10-02",
-          "location": "Nashville",
+          "location": "nashville",
           "category_type_id": 2,
           "customer_id": 1
         }
@@ -36,7 +36,7 @@
           "quantity": 40,
           "price": 29.99,
           "creation_date": "2019-10-02",
-          "location": "Hendersonville",
+          "location": "hendersonville",
           "category_type_id": 3,
           "customer_id": 2
         }
@@ -50,7 +50,7 @@
           "quantity": 10,
           "price": 19.99,
           "creation_date": "2019-10-02",
-          "location": "Hendersonville",
+          "location": "hendersonville",
           "category_type_id": 3,
           "customer_id": 2
         }
@@ -64,7 +64,7 @@
           "quantity": 15,
           "price": 24.99,
           "creation_date": "2019-10-02",
-          "location": "Nashville",
+          "location": "nashville",
           "category_type_id": 4,
           "customer_id": 1
         }
@@ -78,7 +78,7 @@
           "quantity": 15,
           "price": 24.99,
           "creation_date": "2019-10-02",
-          "location": "Nashville",
+          "location": "nashville",
           "category_type_id": 4,
           "customer_id": 2
         }

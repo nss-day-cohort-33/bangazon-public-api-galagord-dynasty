@@ -44,7 +44,7 @@ class Products(ViewSet):
         new_product.description = request.data["description"]
         new_product.quantity = request.data["quantity"]
         new_product.price = request.data["price"]
-        new_product.location = request.data["location"]
+        new_product.location = request.data["location"].lower()
         # new_product.image = request.data["image"]
         category_type = CategoryType.objects.get(pk=request.data["category_type_id"])
         new_product.category_type = category_type
@@ -63,6 +63,8 @@ class Products(ViewSet):
             Response -- JSON serialized product instance
         """
         try:
+            # customer = Product.objects.get(pk=pk)
+            # found this line in another repo and wondered if it can be utilized by us ?
             product = Product.objects.get(pk=pk)
             serializer = ProductSerializer(product, context={'request': request})
             return Response(serializer.data)
@@ -94,17 +96,47 @@ class Products(ViewSet):
             Response -- JSON serialized list of products with customer and category type
         """
         products = Product.objects.all()
+        product_list = []
 
+        # filter by category_type id
         category_type = self.request.query_params.get('category_type', None)
         if category_type is not None:
             products = products.filter(category_type__id=category_type)
+        
+        #filter by location id
+        location = self.request.query_params.get('location', None)
+        category_type = self.request.query_params.get('category', None)
+        quantity = self.request.query_params.get('quantity', None)
+
+        if location == "":
+            products = Product.objects.all()
+        elif location is not None:
+            products = Product.objects.filter(location=location.lower())
+
+        # if category_type is not None:
+        #     products = products.filter(producttype__id=category_type)
+        #     for product in products:
+        #         if product.quantity > 0:
+        #             product_list.append(product)
+        #     products = product_list
+
+        # if quantity is not None:
+        #     quantity = int(quantity)
+        #     length = len(products)
+        #     new_products = list()
+        #     count = 0
+        #     for product in products:
+        #         count += 1
+        #         if count - 1 + quantity >= length:
+        #             new_products.append(product)
+        #             if count == length:
+        #                 products = new_products
+        #                 break
 
         serializer = ProductSerializer(
             products, many=True, context={'request': request})
         return Response(serializer.data)
 
-
-   
     @action(methods=['get'], detail=False)
     def myproducts(self, request):
         current_user = Customer.objects.get(user=request.auth.user)
