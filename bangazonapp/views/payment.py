@@ -8,7 +8,7 @@ from .customer import CustomerSerializer
 from datetime import *
 
 
-"""Author: Adam Knowles
+"""Author: Adam Knowles & Karla Gallegos
     Purpose: Allow a user to communicate with the Bangazon database to GET and POST entries.
     Methods: GET POST"""
 
@@ -47,8 +47,7 @@ class Payments(ViewSet):
             new_payment.merchant_name = request.data["merchant_name"]
             new_payment.account_number = request.data["account_number"]
             new_payment.expiration_date = request.data["expiration_date"]
-
-
+            new_payment.created_at = request.data["created_at"]
             customer = Customer.objects.get(user=request.auth.user)
             new_payment.customer = customer
             new_payment.save()
@@ -57,7 +56,7 @@ class Payments(ViewSet):
 
             return Response(serializer.data)
         else:
-            return Response({"error: your card has expired"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error" : "expired card"}, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk=None):
         """Handle GET requests for a single payment
