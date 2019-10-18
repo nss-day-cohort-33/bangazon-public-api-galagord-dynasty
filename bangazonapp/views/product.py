@@ -95,8 +95,14 @@ class Products(ViewSet):
         Returns:
             Response -- JSON serialized list of products with customer and category type
         """
+
+    # at the bottom, in the serializer, it returns all products because "products" is defined as "Product.objects.all()"
         products = Product.objects.all()
         product_list = []
+
+        limit = self.request.query_params.get('limit', None)
+        if limit is not None:
+            products = Product.objects.all()[:int(limit)]
 
         # filter by category_type id
         category_type = self.request.query_params.get('category_type', None)
@@ -106,32 +112,11 @@ class Products(ViewSet):
         #filter by location id
         location = self.request.query_params.get('location', None)
         category_type = self.request.query_params.get('category', None)
-        quantity = self.request.query_params.get('quantity', None)
 
         if location == "":
             products = Product.objects.all()
         elif location is not None:
             products = Product.objects.filter(location=location.lower())
-
-        # if category_type is not None:
-        #     products = products.filter(producttype__id=category_type)
-        #     for product in products:
-        #         if product.quantity > 0:
-        #             product_list.append(product)
-        #     products = product_list
-
-        # if quantity is not None:
-        #     quantity = int(quantity)
-        #     length = len(products)
-        #     new_products = list()
-        #     count = 0
-        #     for product in products:
-        #         count += 1
-        #         if count - 1 + quantity >= length:
-        #             new_products.append(product)
-        #             if count == length:
-        #                 products = new_products
-        #                 break
 
         serializer = ProductSerializer(
             products, many=True, context={'request': request})
