@@ -16,8 +16,8 @@ class Product(SafeDeleteModel):
     creation_date = models.DateField(auto_now_add=True, blank=True)
     location = models.CharField(max_length=50)
     image = models.ImageField(upload_to=".static/media", blank=True)
-    category_type = models.ForeignKey(CategoryType, on_delete=models.DO_NOTHING, related_name="products")
-    customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING, related_name="products")
+    category_type = models.ForeignKey(CategoryType, on_delete=models.DO_NOTHING)
+    customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
 
 
     @property
