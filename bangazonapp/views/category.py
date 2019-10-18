@@ -7,9 +7,27 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from bangazonapp.models import CategoryType
+from bangazonapp.models import CategoryType, Product
+from .product import ProductSerializer
+
 
 class CategoryTypeSerializer(serializers.HyperlinkedModelSerializer):
+    """JSON serializer for types of categories
+
+    Arguments:
+        serializers
+    """
+    products = ProductSerializer(many=True)
+    class Meta:
+        model = CategoryType
+        url = serializers.HyperlinkedIdentityField(
+            view_name='categorytype',
+            lookup_field='pk'
+        )
+        fields = ('id', 'url', 'name', 'products')
+        depth = 2
+
+class PureCategoryTypeSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for types of categories
 
     Arguments:
@@ -21,7 +39,7 @@ class CategoryTypeSerializer(serializers.HyperlinkedModelSerializer):
             view_name='categorytype',
             lookup_field='pk'
         )
-        fields = ('id', 'url', 'name', 'products')
+        fields = ('id', 'url', 'name')
         depth = 2
 
 class CategoryTypes(ViewSet):
@@ -62,10 +80,15 @@ class CategoryTypes(ViewSet):
             """
             categories = CategoryType.objects.all()
 
-            category = self.request.query_params.get('category', None)
-            if category is not None:
-                categories = categories.filter(category__id=category)
-
-            serializer = CategoryTypeSerializer(
+            limit = self.request.query_params.get('limit', None)
+            if limit is not None:
+                for category in categories:
+                    related_products = Product.objects.filter(category_type=category)
+                    category.products = list(related_products)[:3]
+                serializer = CategoryTypeSerializer(
                 categories, many=True, context={'request': request})
+            else: 
+                serializer = PureCategoryTypeSerializer(
+                categories, many=True, context={'request': request})
+
             return Response(serializer.data)
