@@ -102,7 +102,7 @@ class Products(ViewSet):
 
         limit = self.request.query_params.get('limit', None)
         if limit is not None:
-            products = Product.objects.all()[:20]
+            products = Product.objects.all()[:int(limit)]
 
         # filter by category_type id
         category_type = self.request.query_params.get('category_type', None)
@@ -112,13 +112,11 @@ class Products(ViewSet):
         #filter by location id
         location = self.request.query_params.get('location', None)
         category_type = self.request.query_params.get('category', None)
-        quantity = self.request.query_params.get('quantity', None)
 
         if location == "":
             products = Product.objects.all()
         elif location is not None:
             products = Product.objects.filter(location=location.lower())
-
 
         serializer = ProductSerializer(
             products, many=True, context={'request': request})
