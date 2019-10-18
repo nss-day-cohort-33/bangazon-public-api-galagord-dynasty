@@ -3,6 +3,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
+from rest_framework.decorators import action
 from bangazonapp.models import Order, Customer, Payment, OrderProduct, Product
 from .orderproduct import OrderProductSerializer
 from .product import ProductSerializer
@@ -114,14 +115,74 @@ class Orders(ViewSet):
             Response -- JSON serialized list of orders with customer
         """
         orders = Order.objects.all()
-        customer = Customer.objects.get(user=request.auth.user)
-        orders = Order.objects.filter(customer=customer)
+        # customer = Customer.objects.get(user=request.auth.user)
+        # orders = Order.objects.filter(customer=customer)
         
-        payment = self.request.query_params.get('payment', None)
+        # payment = self.request.query_params.get('payment', None)
 
-        if payment is not None:
-            orders = orders.filter(payment=None)
+        # if payment is not None:
+        #     orders = orders.filter(payment=None)
 
         serializer = OrderSerializer(
             orders, many=True, context={'request': request})
         return Response(serializer.data)
+
+    @action(methods=['get', 'put', 'delete'], detail=False)
+    def cart(self, request):
+        """Shopping cart route for customers
+        Returns:
+            Response -- An HTTP response
+        """
+        current_user = Customer.objects.get(user=request.auth.user)
+
+        if request.method == "DELETE":
+            open_order = Order.objects.get(
+                customer=current_user, payment=None)
+            line_item = OrderProduct.objects.filter(
+                product__id=int(request.data["product_id"]),
+                order=open_order
+            )[0]
+            line_item.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        if request.method == "GET":
+            try:
+                open_order = Order.objects.get(
+                    customer=current_user, payment=None)
+                products_on_order = Product.objects.filter(
+                    cart__order=open_order)
+
+                serialized_order = OrderSerializer(
+                    open_order, many=False, context={'request': request})
+                product_list = ProductSerializer(
+                    products_on_order, many=True, context={'request': request})
+
+                final = {
+                    "order": serialized_order.data
+                }
+                final["order"]["products"] = product_list.data
+                final["order"]["size"] = len(products_on_order)
+
+            except Order.DoesNotExist as ex:
+                return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+            return Response(final['order'])
+
+        if request.method == "PUT":
+            try:
+                open_order = Order.objects.get(
+                    customer=current_user, payment=None)
+            except Order.DoesNotExist as ex:
+                open_order = Order()
+                # open_order.created_date = datetime.datetime.now()
+                open_order.customer = current_user
+                open_order.save()
+
+            line_item = OrderProduct()
+            line_item.product = Product.objects.get(
+                pk=request.data["product_id"])
+            line_item.order = open_order
+            line_item.save()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
