@@ -137,7 +137,7 @@ class Orders(ViewSet):
 
         if request.method == "DELETE":
             open_order = Order.objects.get(
-                customer=current_user, payment_type=None)
+                customer=current_user, payment=None)
             line_item = OrderProduct.objects.filter(
                 product__id=int(request.data["product_id"]),
                 order=open_order
@@ -149,7 +149,7 @@ class Orders(ViewSet):
         if request.method == "GET":
             try:
                 open_order = Order.objects.get(
-                    customer=current_user, payment_type=None)
+                    customer=current_user, payment=None)
                 products_on_order = Product.objects.filter(
                     cart__order=open_order)
 
@@ -167,12 +167,12 @@ class Orders(ViewSet):
             except Order.DoesNotExist as ex:
                 return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
-            return Response(final)
+            return Response(final['order'])
 
         if request.method == "PUT":
             try:
                 open_order = Order.objects.get(
-                    customer=current_user, payment_type=None)
+                    customer=current_user, payment=None)
             except Order.DoesNotExist as ex:
                 open_order = Order()
                 # open_order.created_date = datetime.datetime.now()
