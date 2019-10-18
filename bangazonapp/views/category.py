@@ -27,6 +27,21 @@ class CategoryTypeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'url', 'name', 'products')
         depth = 2
 
+class PureCategoryTypeSerializer(serializers.HyperlinkedModelSerializer):
+    """JSON serializer for types of categories
+
+    Arguments:
+        serializers
+    """
+    class Meta:
+        model = CategoryType
+        url = serializers.HyperlinkedIdentityField(
+            view_name='categorytype',
+            lookup_field='pk'
+        )
+        fields = ('id', 'url', 'name')
+        depth = 2
+
 class CategoryTypes(ViewSet):
     """Product category types for Bangazon"""
 
@@ -70,7 +85,10 @@ class CategoryTypes(ViewSet):
                 for category in categories:
                     related_products = Product.objects.filter(category_type=category)
                     category.products = list(related_products)[:3]
-
-            serializer = CategoryTypeSerializer(
+                serializer = CategoryTypeSerializer(
                 categories, many=True, context={'request': request})
+            else: 
+                serializer = PureCategoryTypeSerializer(
+                categories, many=True, context={'request': request})
+
             return Response(serializer.data)
