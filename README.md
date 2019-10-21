@@ -1,4 +1,4 @@
-# python-bangazon-api-template
+# Directions to using banagzon-public-api-galagord-dynasty
 
 After cloning project, open up your terminal, cd into the project. Then execute these commands:
 
