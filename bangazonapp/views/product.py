@@ -63,8 +63,7 @@ class Products(ViewSet):
             Response -- JSON serialized product instance
         """
         try:
-            # customer = Product.objects.get(pk=pk)
-            # found this line in another repo and wondered if it can be utilized by us ?
+            
             product = Product.objects.get(pk=pk)
             serializer = ProductSerializer(product, context={'request': request})
             return Response(serializer.data)

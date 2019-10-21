@@ -75,8 +75,7 @@ class OrderProducts(ViewSet):
             orderproducts = orderproducts.filter(product__id=product)
         if order is not None:
             orderproducts = orderproducts.filter(order_payment=None)
-        # if payment is not None:
-        #     orderproducts = orderproducts.filter(payment__none=None)
+        
 
 
         serializer = OrderProductSerializer(
