@@ -115,13 +115,7 @@ class Orders(ViewSet):
             Response -- JSON serialized list of orders with customer
         """
         orders = Order.objects.all()
-        # customer = Customer.objects.get(user=request.auth.user)
-        # orders = Order.objects.filter(customer=customer)
-        
-        # payment = self.request.query_params.get('payment', None)
-
-        # if payment is not None:
-        #     orders = orders.filter(payment=None)
+       
 
         serializer = OrderSerializer(
             orders, many=True, context={'request': request})
@@ -175,7 +169,6 @@ class Orders(ViewSet):
                     customer=current_user, payment=None)
             except Order.DoesNotExist as ex:
                 open_order = Order()
-                # open_order.created_date = datetime.datetime.now()
                 open_order.customer = current_user
                 open_order.save()
 
